@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './App.css';
+import LoginPage from './components/LoginPage';
 
-const API_URL = '/api';
+const API_URL = 'http://localhost:3001/api';
 
 // ─── DATA (dihapus, sekarang dari database) ────────────────────────────────
 // Data diambil dari server SQLite
@@ -78,16 +79,18 @@ function SkillShiftLogo({ onClick, small }) {
 
       {/* Text */}
       <div className="group-hover:translate-x-0.5 transition-transform duration-300">
-        <div className={`${small ? 'text-[15px]' : 'text-[21px]'} leading-none tracking-tight flex items-baseline gap-[1px]`}>
-          <span className="font-black" style={{ color: '#6b1020' }}>Skill</span>
-          <span className="font-black text-gray-900">Shift</span>
-        </div>
-        <div className="flex items-center gap-1.5 mt-0.5">
-          <div className="h-[1px] w-3 bg-gradient-to-r from-[#c99042] to-transparent"/>
-          <span className="text-[6.5px] uppercase tracking-[.4em] font-black" style={{ color: '#c99042' }}>
-            career portal
-          </span>
-          <div className="h-[1px] w-3 bg-gradient-to-l from-[#c99042] to-transparent"/>
+        <div className="flex flex-col items-center">
+          <div className={`${small ? 'text-[20px]' : 'text-[21px]'} leading-none tracking-tight flex items-baseline gap-[1px]`}>
+            <span className="font-black" style={{ color: '#6b1020' }}>Skill</span>
+            <span className="font-black text-gray-900">Shift</span>
+          </div>
+          <div className="flex items-center gap-1.5 pt-0.5">
+            <div className="h-[1px] w-4 bg-gradient-to-r from-[#c99042] to-transparent"/>
+            <span className="text-[7px] uppercase tracking-[.4em] font-black" style={{ color: '#c99042' }}>
+              career portal
+            </span>
+            <div className="h-[1px] w-4 bg-gradient-to-l from-[#c99042] to-transparent"/>
+          </div>
         </div>
       </div>
     </div>
@@ -324,7 +327,7 @@ function JobDetailModal({
               </h2>
               <p className="text-gray-300 text-sm font-semibold mt-2 flex items-center gap-2">
                 <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">
-                  🏢
+                  <img src="/images/icon-gedung.png" alt="company" className="w-4 h-4" />
                 </span>
                 {job.company}
               </p>
@@ -350,7 +353,7 @@ function JobDetailModal({
               {job.title}
             </h2>
             <p className="text-[#d7bc9d] text-sm font-bold mt-3 flex items-center gap-2">
-              🏢 {job.company}
+              <img src="/images/icon-gedung.png" alt="company" className="w-4 h-4" /> {job.company}
             </p>
           </div>
         )}
@@ -360,17 +363,21 @@ function JobDetailModal({
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: 'Lokasi', value: job.location, icon: '📍' },
-              { label: 'Gaji / Bulan', value: job.salary, icon: '💰' },
-              { label: 'Jam Kerja', value: job.hours, icon: '⏰' },
-              { label: 'Min. Usia', value: `${job.minAge} Tahun`, icon: '👤' },
-            ].map(({ label, value, icon }) => (
+              { label: 'Lokasi', value: job.location, iconImg: '/images/icon-stats-kota.png', iconAlt: 'kota', iconSize: 'w-5 h-5' },
+              { label: 'Gaji / Bulan', value: job.salary, iconImg: '/images/icon-gaji.png', iconAlt: 'salary', iconSize: 'w-4 h-4' },
+              { label: 'Jam Kerja', value: job.hours, iconImg: '/images/jam.png', iconAlt: 'jam', iconSize: 'w-4 h-4' },
+              { label: 'Min. Usia', value: `${job.minAge} Tahun`, iconImg: '/images/icon-usia.png', iconAlt: 'age', iconSize: 'w-4 h-4' },
+            ].map(({ label, value, iconImg, iconAlt, iconEmoji, iconSize }) => (
               <div
                 key={label}
                 className="bg-white border border-gray-100/80 rounded-2xl px-5 py-5 flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all"
               >
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2 flex items-center gap-1.5">
-                  <span className="text-sm">{icon}</span> {label}
+                  {iconImg ? (
+                    <img src={iconImg} alt={iconAlt} className={iconSize} />
+                  ) : (
+                    <span className={iconSize}>{iconEmoji}</span>
+                  )} {label}
                 </p>
                 <p className="font-black text-gray-900 text-[16px]">{value}</p>
               </div>
@@ -378,10 +385,10 @@ function JobDetailModal({
           </div>
 
           {/* Skills */}
-          <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100">
+          <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100 -ml-4">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                🎯
+              <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm flex-shrink-0">
+                <img src="/images/icon-skills.png" alt="skills" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Skills Dibutuhkan
@@ -403,7 +410,7 @@ function JobDetailModal({
           <div>
             <div className="flex items-center gap-2 mb-4 px-2">
               <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                📋
+                <img src="/images/icon-deskripsi.png" alt="description" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Deskripsi Pekerjaan
@@ -418,7 +425,7 @@ function JobDetailModal({
           <div>
             <div className="flex items-center gap-2 mb-4 px-2">
               <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                📞
+                <img src="/images/icon-kontak.png" alt="contact" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Hubungi Rekruter
@@ -430,7 +437,7 @@ function JobDetailModal({
                   onClick={handleWhatsApp}
                   className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-6 py-4 text-xs font-black uppercase tracking-widest hover:shadow-lg hover:-translate-y-1 transition-all rounded-2xl"
                 >
-                  <span className="text-lg">💬</span> WhatsApp
+                  <span className="text-lg"><img src="/images/icon-whatsapp.png" alt="whatsapp" className="w-4 h-4" /></span> WhatsApp
                 </button>
               )}
               {job.contactEmail && (
@@ -438,7 +445,7 @@ function JobDetailModal({
                   onClick={handleEmail}
                   className="flex items-center justify-center gap-3 bg-white border-2 border-maroon text-maroon px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-maroon hover:text-white transition-all rounded-2xl shadow-sm hover:shadow-lg"
                 >
-                  <span className="text-lg">✉️</span> Email
+                  <span className="text-lg"><img src="/images/icon-email.png" alt="email" className="w-4 h-4" /></span> Email
                 </button>
               )}
             </div>
@@ -451,7 +458,7 @@ function JobDetailModal({
     <div className="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-[#c99042]/5" />
     <div className="flex items-center gap-4 relative z-10">
       <div className="w-10 h-10 rounded-2xl bg-white border border-[#e8d5b0] flex items-center justify-center text-lg shadow-sm flex-shrink-0">
-        🏆
+        <img src="/images/icon-trophy.png" alt="trophy" className="w-4 h-4" />
       </div>
       <div className="flex-1">
         <p className="font-black text-[#7a5c2e] text-[13px] uppercase tracking-widest mb-0.5">
@@ -497,7 +504,15 @@ function JobDetailModal({
               onClick={() => onToggleSave(job)}
               className={`w-full py-4 text-xs font-black uppercase tracking-widest border-2 transition-all rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 ${isSaved ? 'bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white border-maroon' : 'bg-white text-maroon border-maroon hover:bg-maroon hover:text-white'}`}
             >
-              {isSaved ? '🔖 Lowongan Tersimpan' : '🔖 Simpan Lowongan Ini'}
+              {isSaved ? (
+                <>
+                  <img src="/images/icon-save.png" alt="save" className="w-4 h-4 inline-block mr-2" /> Lowongan Tersimpan
+                </>
+              ) : (
+                <>
+                  <img src="/images/icon-save.png" alt="save" className="w-4 h-4 inline-block mr-2" /> Simpan Lowongan Ini
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -536,11 +551,11 @@ function AcceptedCard({ job, onRemove }) {
                 {job.title}
               </h3>
               <p className="text-sm text-gray-500 mt-1 font-medium">
-                {job.company} · <span className="text-maroon font-black">{job.salary}</span>
+                {job.company}  <span className="text-maroon font-black ml-1"><img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4 inline-block mr-0.5" />{job.salary}</span>
               </p>
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-xs bg-gray-50 px-2 py-1 rounded-md text-gray-500 font-semibold border border-gray-100">
-                  📍 {job.location}
+                  <img src="/images/icon-stats-kota.png" alt="kota" className="w-6 h-6" /> {job.location}
                 </span>
                 <span className="text-xs bg-gray-50 px-2 py-1 rounded-md text-gray-500 font-semibold border border-gray-100">
                   {job.type}
@@ -559,6 +574,7 @@ function AcceptedCard({ job, onRemove }) {
                 stroke="currentColor"
                 strokeWidth={2.5}
               >
+                
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -573,13 +589,13 @@ function AcceptedCard({ job, onRemove }) {
 function JobCard({ job, savedJobs, onSave, onSelect }) {
   const isSaved = savedJobs.some((s) => s.id === job.id);
   const catIcon = {
-    Kreatif: '💼',
-    IT: '💻',
-    'F&B': '☕',
-    Pendidikan: '📚',
-    Logistik: '📦',
-    Kesehatan: '🏥',
-    Lainnya: '💼',
+    Kreatif: '/images/kreatif.png',
+    IT: '/images/it.png',
+    'F&B': '/images/fnb.png',
+    Pendidikan: '/images/pendidikan.png',
+    Logistik: '/images/logistik.png',
+    Kesehatan: '/images/kesehatan.png',
+    Lainnya: '/images/lainnya.png',
   };
 
   return (
@@ -606,13 +622,13 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
             }}
             className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all text-sm backdrop-blur-md border ${isSaved ? 'bg-maroon text-white border-maroon' : 'bg-white/90 text-gray-400 hover:text-maroon border-white hover:bg-white'}`}
           >
-            🔖
+            <img src="/images/icon-save.png" alt="save" className="w-4 h-4" />
           </button>
         </div>
       </div>
       <div className="px-6 py-3 flex flex-col flex-1">
         <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#fcf4e8] to-white border border-[#f0e4d2] text-[#c99042] px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider mb-3 w-fit shadow-sm">
-          <span className="text-[12px]">{catIcon[job.category] || '💼'}</span> {job.category}
+          <img src={catIcon[job.category] || '💼'} alt={job.category} className="w-4 h-4 object-contain" /> {job.category}
         </div>
         <h3 className="font-black text-gray-900 text-[18px] leading-tight mb-1.5 line-clamp-2">
           {job.title}
@@ -621,10 +637,10 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
 
         <div className="flex items-center gap-3 text-[11px] text-gray-500 mb-5 font-bold uppercase tracking-wider">
           <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <span className="text-maroon">📍</span> {job.location}
+            <img src="/images/icon-location.png" alt="location" className="w-4 h-4" /> {job.location}
           </span>
           <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <span className="text-maroon">⏰</span> {job.hours}
+            <img src="/images/icon-hours.png" alt="hours" className="w-4 h-4" /> {job.hours}
           </span>
         </div>
 
@@ -644,8 +660,8 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
             <div className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">
               Gaji mulai dari
             </div>
-            <div className="font-black text-maroon text-[15px]">
-              {job.salary}{' '}
+            <div className="font-black text-maroon text-[15px] flex items-center gap-1">
+              <img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4" />{job.salary}{' '}
               <span className="text-[9px] text-gray-400 font-bold ml-1 border-l border-gray-200 pl-2 uppercase">
                 Min. {job.minAge} thn
               </span>
@@ -666,6 +682,96 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
             </svg>
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SLIM PREMIUM GLASS FRAME ────────────────────────────────────────────────
+function SlimGlassFrame({ children }) {
+  return (
+    <div className="slim-glass-wrapper">
+      {/* Subtle Ambient Glows */}
+      <div className="ambient-haze">
+        <div className="haze haze-1" />
+        <div className="haze haze-2" />
+      </div>
+
+      {/* Layer 1: Back Acrylic - Very Subtle */}
+      <div className="acrylic-layer-back">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Layer 2: Mid Acrylic - Subtle */}
+      <div className="acrylic-layer-mid">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Layer 3: Front Acrylic - Light */}
+      <div className="acrylic-layer-front">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Main Frame */}
+      <div className="slim-frame">
+        {/* Subtle Border Glow */}
+        <div className="slim-border">
+          <div className="bd-top" />
+          <div className="bd-bottom" />
+          <div className="bd-left" />
+          <div className="bd-right" />
+        </div>
+
+        {/* Inner Reflection */}
+        <div className="inner-glow" />
+        <div className="inner-shine" />
+
+        {/* Content */}
+        <div className="frame-inner">
+          {children}
+        </div>
+      </div>
+
+      {/* Light Accents */}
+      <div className="light-accent">
+        <div className="accent-streak as-1" />
+        <div className="accent-streak as-2" />
+        <div className="accent-streak as-3" />
+      </div>
+
+      {/* Mini Sparkles */}
+      <div className="mini-sparkle">
+        <div className="spark sp-1">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="spark sp-2">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="spark sp-3">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="spark sp-4">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* Soft Shadow */}
+      <div className="soft-shadow">
+        <div className="shade shade-1" />
       </div>
     </div>
   );
@@ -758,7 +864,25 @@ export default function App() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-const [searchInputVal, setSearchInputVal] = useState('');
+  const [searchInputVal, setSearchInputVal] = useState('');
+
+  // Login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState(null); // 'admin' or 'user'
+
+  // Handle login success from LoginPage
+  const handleLoginSuccess = (type) => {
+    setIsLoggedIn(true);
+    setUserType(type);
+    setActiveTab(type === 'admin' ? 'admin' : 'home');
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserType(null);
+    setActiveTab('home');
+  };
 
   const allTypes = useMemo(
     () => ['Semua', ...new Set(jobs.map((j) => j.type).filter(Boolean))],
@@ -831,10 +955,62 @@ const [searchInputVal, setSearchInputVal] = useState('');
   const handleAdminImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // Check file size first
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Ukuran file terlalu besar. Maksimal 5MB.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (ev) => {
-      setAdminImagePreview(ev.target.result);
-      setAdminForm((f) => ({ ...f, image: ev.target.result }));
+      try {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxWidth = 600;
+          const maxHeight = 400;
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 0.5 quality (smaller file)
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+
+          console.log('Original size:', (file.size / 1024).toFixed(2), 'KB');
+          console.log('Compressed size:', (compressedDataUrl.length / 1024).toFixed(2), 'KB');
+
+          setAdminImagePreview(compressedDataUrl);
+          setAdminForm((f) => ({ ...f, image: compressedDataUrl }));
+        };
+        img.onerror = () => {
+          // Fallback: use original if compression fails
+          console.log('Compression failed, using original');
+          setAdminImagePreview(ev.target.result);
+          setAdminForm((f) => ({ ...f, image: ev.target.result }));
+        };
+        img.src = ev.target.result;
+      } catch (err) {
+        console.error('Image processing error:', err);
+        alert('Gagal memproses gambar. Coba gunakan foto lain.');
+      }
+    };
+    reader.onerror = () => {
+      alert('Gagal membaca file. Coba gunakan foto lain.');
     };
     reader.readAsDataURL(file);
   };
@@ -903,13 +1079,14 @@ const [searchInputVal, setSearchInputVal] = useState('');
 
   const handleNavClick = (key) => {
     if (key === 'jobs') {
-  setActiveTab('jobs');
-  setSearchOpen(false);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-    else if (key === 'admin') {
+      setActiveTab('jobs');
+      setSearchOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (key === 'admin') {
       if (isAdminAuth) setActiveTab('admin');
       else setShowAdminPwd(true);
+    } else if (key === 'login') {
+      setActiveTab('login');
     } else {
       setActiveTab(key);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -932,50 +1109,82 @@ const [searchInputVal, setSearchInputVal] = useState('');
 
   return (
     <div className="min-h-screen flex flex-col app-root relative">
-      {/* ── NAVBAR (Enhanced Aesthetic) ── */}
+      {/* ── LOGIN PAGE (Tampilkan jika tab = login dan belum login) ── */}
+      {activeTab === 'login' && !isLoggedIn && (
+        <LoginPage onLoginSuccess={handleLoginSuccess} />
+      )}
+
+      {/* ── NAVBAR (sembunyikan saat di halaman login) ── */}
+      {!(activeTab === 'login' && !isLoggedIn) && (
       <nav className="nav-bar py-3 px-6 md:px-10 flex justify-between items-center sticky top-0 z-50 bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-white">
         <SkillShiftLogo onClick={() => setActiveTab('home')} small />
 
         <div className="hidden md:flex items-center gap-9">
-          {[
-            { key: 'home', label: 'Beranda' },
-            { key: 'jobs', label: 'Lowongan' },
-            // Menu CV Builder Dihapus sepenuhnya
-            { key: 'saved', label: 'Tersimpan' },
-            { key: 'history', label: `Diterima (${acceptedJobs.length})` },
-            { key: 'admin', label: 'Admin Panel' },
-          ].map((item) => (
-            <button
-              key={item.key}
-              onClick={() => handleNavClick(item.key)}
-              className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
-            >
-              {item.label}
-              {activeTab === item.key && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
-              )}
-            </button>
-          ))}
+          {!isLoggedIn ? (
+            <>
+              {[
+                { key: 'home', label: 'Beranda' },
+                { key: 'jobs', label: 'Lowongan' },
+                { key: 'saved', label: 'Tersimpan' },
+                { key: 'history', label: 'Diterima' },
+              ].map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => handleNavClick(item.key)}
+                  className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
+                >
+                  {item.label}
+                  {activeTab === item.key && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
+                  )}
+                </button>
+              ))}
+              <button
+                onClick={() => handleNavClick('login')}
+                className="pb-1.5 pt-1.5 transition-all relative nav-inactive text-gray-500 hover:text-maroon"
+              >
+                Login
+              </button>
+            </>
+          ) : (
+            <>
+              {[
+                { key: 'home', label: 'Beranda' },
+                { key: 'jobs', label: 'Lowongan' },
+                { key: 'saved', label: 'Tersimpan' },
+                { key: 'history', label: 'Diterima' },
+                { key: 'admin', label: userType === 'admin' ? 'Dashboard' : 'Profil' },
+              ].map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => handleNavClick(item.key)}
+                  className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
+                >
+                  {item.label}
+                  {activeTab === item.key && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
+                  )}
+                </button>
+              ))}
+              <button
+                onClick={handleLogout}
+                className="pb-1.5 pt-1.5 nav-inactive text-gray-500 hover:text-red-500 transition-all"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <button
-            onClick={() => {
-              alert(
-                'Notifikasi berhasil diaktifkan! ✅ Kami akan mengabari Anda jika ada lowongan baru.'
-              );
-            }}
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-maroon/30 text-gray-400 hover:text-maroon"
-            title="Aktifkan Notifikasi"
-          >
-            🔔
-          </button>
-          <button
-            onClick={() => handleNavClick('admin')}
-            className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-xl text-[12px] font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
-          >
-            + Post Lowongan
-          </button>
+          {!isLoggedIn && (
+            <button
+              onClick={() => handleNavClick('login')}
+              className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-xl text-[12px] font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
+            >
+              Login
+            </button>
+          )}
         </div>
 
         <button
@@ -985,6 +1194,7 @@ const [searchInputVal, setSearchInputVal] = useState('');
           ☰
         </button>
       </nav>
+      )}
 
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 px-6 py-4 flex flex-col gap-2 z-40 shadow-xl absolute w-full left-0 top-[72px]">
@@ -993,7 +1203,8 @@ const [searchInputVal, setSearchInputVal] = useState('');
             { key: 'jobs', label: 'Lowongan' },
             { key: 'saved', label: 'Tersimpan' },
             { key: 'history', label: 'Diterima' },
-            { key: 'admin', label: 'Admin Panel' },
+            ...(!isLoggedIn ? [{ key: 'login', label: 'Login' }] : []),
+            ...(isLoggedIn && userType === 'admin' ? [{ key: 'admin', label: 'Dashboard' }] : []),
           ].map((item) => (
             <button
               key={item.key}
@@ -1003,6 +1214,14 @@ const [searchInputVal, setSearchInputVal] = useState('');
               {item.label}
             </button>
           ))}
+          {isLoggedIn && (
+            <button
+              onClick={handleLogout}
+              className="text-left text-xs font-black uppercase tracking-widest py-3.5 text-red-500"
+            >
+              Logout
+            </button>
+          )}
         </div>
       )}
 
@@ -1232,35 +1451,17 @@ const [searchInputVal, setSearchInputVal] = useState('');
 
                 {/* Right Side - Floating Aesthetic Image */}
                 <div className="w-full lg:w-1/2 flex flex-col items-center">
-                  <div
-                    className="
-relative
-rounded-[34px]
-overflow-hidden
-
-border-[6px]
-border-white
-
-shadow-[0_20px_50px_rgba(0,0,0,.12)]
-
-w-full
-max-w-[520px]
-"
-                  >
+                  <SlimGlassFrame>
                     <img
                       src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200"
-                      className="
-w-full
-h-[360px]
-object-cover
-"
+                      className="w-full h-[360px] object-cover rounded-[24px]"
                     />
-                  </div>
+                  </SlimGlassFrame>
 
                   <div
                     className="
 w-full
-max-w-[520px]
+max-w-7xl
 
 bg-white/80
 backdrop-blur-xl
@@ -1285,21 +1486,24 @@ overflow-hidden
                   >
                     {[
                       {
-                        icon: '💼',
+                        icon: '/images/icon-stats-lowongan.png',
                         v: jobs.length,
                         t: 'Lowongan Aktif',
+                        fallback: '💼',
                       },
 
                       {
-                        icon: '🔖',
+                        icon: '/images/icon-stats-disimpan.png',
                         v: savedJobs.length,
                         t: 'Loker Disimpan',
+                        fallback: '🔖',
                       },
 
                       {
-                        icon: '📍',
+                        icon: '/images/icon-stats-kota.png',
                         v: allLocations.length - 1,
                         t: 'Kota Tersedia',
+                        fallback: '📍',
                       },
                     ].map((i) => (
                       <div
@@ -1316,7 +1520,7 @@ last:border-r-0
 border-gray-100
 "
                       >
-                        <div className="text-[24px] mb-2">{i.icon}</div>
+                        <div className="mb-2 flex items-center justify-center">{i.icon ? <img src={i.icon} alt={i.t} className="w-7 h-7 object-contain" /> : <span className="text-[24px]">{i.fallback}</span>}</div>
 
                         <div
                           className="
@@ -1356,7 +1560,7 @@ mt-2
             ref={jobsRef}
             className="px-6 md:px-10 mt-6 pb-12 relative z-20"
           >
-            <div className="max-w-6xl mx-auto scroll-mt-28">
+            <div className="max-w-7xl mx-auto scroll-mt-28">
               <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-wrap lg:flex-nowrap items-center gap-3 border border-white">
                 {[
                   {
@@ -1386,7 +1590,7 @@ mt-2
                 ].map(({ label, options, value, onChange }, i) => (
                   <React.Fragment key={label}>
                     <div className="flex-1 min-w-[140px] px-3 py-1.5">
-                      <p className="text-[10px] font-black text-gray-400 mb-1 px-4 uppercase tracking-widest">
+                      <p className="text-[10px] font-black text-gray-400 mb-1 pl-4 uppercase tracking-widest">
                         {label}
                       </p>
                       <DropdownFilter
@@ -1405,20 +1609,10 @@ mt-2
                 <div className="w-full mt-3 lg:mt-0 px-2 lg:min-w-[280px]">
                   <button
                     onClick={() => handleNavClick('jobs')}
-                    className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all shadow-mdtext-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all"
+                    className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all shadow-md"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={3}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     Cari Lowongan
                   </button>
@@ -1432,8 +1626,8 @@ mt-2
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b border-gray-200/50 pb-6 gap-4">
                 <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-2xl border border-gray-100">
-                    💼
+                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center border border-gray-100">
+                    <img src="/images/lowongan terbaru.png" alt="Lowongan" className="w-8 h-8 object-contain" />
                   </div>
                   <div>
                     <h2 className="font-black text-gray-900 text-3xl drop-shadow-sm serif">
@@ -1546,9 +1740,9 @@ mt-2
           ].map(({ label, options, value, onChange }, i) => (
             <React.Fragment key={label}>
               <div className="flex-1 min-w-[140px] px-3 py-1.5 whitespace-nowrap">
-                <p className="text-[10px] font-black text-gray-400 mb-1 px-4 uppercase tracking-[0.15em] whitespace-nowrap">
-  {label}
-</p>
+                <p className="text-[10px] font-black text-gray-400 mb-1 pl-4 uppercase tracking-widest whitespace-nowrap">
+                  {label}
+                </p>
                 <DropdownFilter
                   label="Semua"
                   options={options}
@@ -1565,7 +1759,6 @@ mt-2
          {/* Tombol / Input Search */}
           <div className="w-full mt-3 lg:mt-0 px-2">
             {!searchOpen ? (
-              /* Tombol Cari — klik buka input */
               <button
                 onClick={() => {
                   setSearchOpen(true);
@@ -1579,15 +1772,11 @@ mt-2
                 Cari Lowongan
               </button>
             ) : (
-              /* Input search muncul */
-              <form
-  className="flex items-center gap-2 w-full"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSearchTerm(searchInputVal);
-                  setSearchOpen(false);
-                }}
-              >
+              <form className="flex items-center gap-2 w-full" onSubmit={(e) => {
+                e.preventDefault();
+                setSearchTerm(searchInputVal);
+                setSearchOpen(false);
+              }}>
                 <div className="flex items-center gap-2 bg-gray-50 border-2 border-maroon rounded-2xl px-4 py-3 flex-1">
                   <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -1598,9 +1787,9 @@ mt-2
                     placeholder="Cari posisi, perusahaan..."
                     value={searchInputVal}
                     onChange={(e) => {
-  setSearchInputVal(e.target.value);
-  setSearchTerm(e.target.value);
-}}
+                      setSearchInputVal(e.target.value);
+                      setSearchTerm(e.target.value);
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === 'Escape') {
                         setSearchOpen(false);
@@ -1610,19 +1799,12 @@ mt-2
                     className="flex-1 bg-transparent outline-none text-sm font-bold text-gray-800 placeholder-gray-400"
                   />
                   {searchInputVal && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchInputVal('')}
-                      className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-black"
-                    >
+                    <button type="button" onClick={() => setSearchInputVal('')} className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-black">
                       ✕
                     </button>
                   )}
                 </div>
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0"
-                >
+                <button type="submit" className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0">
                   Cari
                 </button>
               </form>
@@ -1719,7 +1901,7 @@ mt-2
           </div>
           {savedJobs.length === 0 ? (
             <div className="text-center py-28 bg-white/60 rounded-[24px] border border-white shadow-[0_8px_30px_rgba(0,0,0,0.03)] backdrop-blur-sm">
-              <p className="text-7xl mb-6 drop-shadow-sm">🔖</p>
+              <p className="mb-6"><img src="/images/icon-bookmark.png" alt="bookmark" className="w-20 h-20 mx-auto" /></p>
               <p className="text-gray-800 text-xl font-black mb-2">
                 Belum ada loker yang disimpan.
               </p>
@@ -1757,14 +1939,14 @@ mt-2
                           {j.type}
                         </span>
                         <span className="text-[9px] font-bold uppercase tracking-widest text-maroon bg-maroon/5 px-3 py-1 rounded-md border border-maroon/10">
-                          📍 {j.location}
+                          <img src="/images/icon-stats-kota.png" alt="kota" className="w-6 h-6" /> {j.location}
                         </span>
                       </div>
                       <h3 className="font-black text-xl truncate text-gray-900 leading-tight mb-1">
                         {j.title}
                       </h3>
                       <p className="text-sm text-gray-500 font-medium">
-                        {j.company} · <span className="text-gray-900 font-black">{j.salary}</span>
+                        {j.company}  <span className="text-gray-900 font-black ml-1"><img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4 inline-block mr-0.5" />{j.salary}</span>
                       </p>
                     </div>
                   </div>
@@ -1868,8 +2050,9 @@ mt-2
         <div className="animate-fade-in p-6 md:p-10 max-w-6xl mx-auto w-full">
           <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-200/60 pb-6 mb-10 gap-4">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-maroon">
-                🔐 Mode Administrator
+              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-maroon flex items-center gap-2">
+                <img src="/images/gembok.png" alt="admin" className="w-3 h-3 align-middle -mt-1" />
+                Mode Administrator
               </span>
               <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-2 drop-shadow-sm">
                 Dashboard
@@ -1896,49 +2079,44 @@ mt-2
           {/* Admin Stats with Shadows */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Total Lowongan', value: jobs.length, accent: '#8b182a', icon: '📋' },
-              { label: 'Disimpan User', value: savedJobs.length, accent: '#1e293b', icon: '🔖' },
-              {
-                label: 'Kota Jangkauan',
-                value: allLocations.length - 1,
-                accent: '#c99042',
-                icon: '📍',
-              },
-              {
-                label: 'Kategori Aktif',
-                value: allCategories.length - 1,
-                accent: '#059669',
-                icon: '🏷️',
-              },
-            ].map(({ label, value, accent, icon }, idx) => (
+              { label: 'Total Lowongan', value: jobs.length, accent: '#8b182a', iconImg: '/images/icon-deskripsi.png', iconAlt: 'description' },
+              { label: 'Disimpan User', value: savedJobs.length, accent: '#1e293b', iconImg: '/images/icon-save.png', iconAlt: 'save' },
+              { label: 'Kota Jangkauan', value: allLocations.length - 1, accent: '#c99042', iconImg: '/images/icon-stats-kota.png', iconAlt: 'kota' },
+              { label: 'Kategori Aktif', value: allCategories.length - 1, accent: '#059669', iconImg: '/images/icon-user-admin.png', iconAlt: 'kategori' },
+            ].map(({ label, value, accent, iconImg, iconAlt, iconEmoji }, idx) => (
               <div
                 key={label}
-                className="bg-white/90 backdrop-blur-md border border-white p-3 relative overflow-hidden hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all rounded-[32px] shadow-lg hover:-translate-y-1"
+                className="bg-white/70 backdrop-blur-sm border border-gray-200/50 p-2 relative overflow-hidden hover:bg-white/80 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all rounded-2xl shadow-sm hover:scale-[1.02]"
               >
                 <div
-                  className="absolute top-0 left-0 right-0 h-2 rounded-t-[32px] opacity-80"
-                  style={{ backgroundColor: accent, boxShadow: `0 2px 10px ${accent}60` }}
+                  className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/40 to-transparent"
                 />
-                <div className="flex flex-col items-center justify-center text-center gap-1">
-  <p className="text-2xl drop-shadow-sm">{icon}</p>
-  <p
-    className="text-2xl font-black serif tabular-nums text-transparent bg-clip-text"
-    style={{
-      backgroundImage: `linear-gradient(to bottom right, ${accent}, ${accent}90)`,
-    }}
-  >
-    {value}
-  </p>
- <p className="text-[9px] font-black uppercase tracking-widest text-gray-500 mt-1">
-    {label}
-  </p>
-</div>
+                <div className="flex flex-col items-center justify-center text-center gap-0.5 py-2">
+                  <div className="text-xl drop-shadow-sm">
+                    {iconImg ? (
+                      <img src={iconImg} alt={iconAlt} className="w-5 h-5 object-contain opacity-80" />
+                    ) : (
+                      iconEmoji
+                    )}
+                  </div>
+                  <p
+                    className="text-xl font-bold text-gray-800 tabular-nums"
+                    style={{
+                      color: accent,
+                    }}
+                  >
+                    {value}
+                  </p>
+                  <p className="text-[8px] font-semibold uppercase tracking-wider text-gray-400">
+                    {label}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
           <h3 className="text-2xl font-black serif mb-6 text-gray-900 flex items-center gap-3 drop-shadow-sm">
             <span className="w-10 h-10 bg-white shadow-sm flex items-center justify-center rounded-xl text-lg">
-              📋
+              <img src="/images/icon-deskripsi.png" alt="description" className="w-4 h-4" />
             </span>{' '}
             Manajemen Lowongan
           </h3>
@@ -1972,8 +2150,7 @@ mt-2
                     </h4>
                     <p className="text-sm text-gray-500 font-medium">
                       {job.company} ·{' '}
-                      <span className="font-bold text-gray-800">📍 {job.location}</span> ·{' '}
-                      <span className="text-maroon font-black">{job.salary}</span>
+                      <span className="font-bold text-gray-800 flex items-center gap-1"><img src="/images/icon-stats-kota.png" alt="kota" className="w-4 h-4 align-middle" /> {job.location}</span>  <span className="text-maroon font-black flex items-center gap-1"><img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4" />{job.salary}</span>
                     </p>
                   </div>
                 </div>
