@@ -10,6 +10,11 @@ export default defineConfig({
       allowReserveFull: true,
     },
   },
+  build: {
+    // Pakai esbuild minifier supaya tidak error saat parse CSS modern
+    // seperti 100svh yang lightningcss minifier rewel.
+    minify: 'esbuild',
+  },
   optimizeDeps: {
     exclude: ['better-sqlite3'],
   },
